@@ -1,6 +1,8 @@
 # Budget Book
 
-Home Assistant Supervisor Add-on port of the [Budget Book](https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book) custom integration (v1.2.4), with the same panel UI and features. This add-on lives in the same repository as the HACS integration.
+Fork v1.2.5 adds dining details by meal and optional channel in the Charts tab. Existing dining entries remain included; no storage migration is required. See [FORK_MAINTENANCE.md](../FORK_MAINTENANCE.md).
+
+Home Assistant Supervisor Add-on port of the [Budget Book](https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book) custom integration (v1.2.5), with the same panel UI and features. This add-on lives in the same repository as the HACS integration.
 
 ## Features
 

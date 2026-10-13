@@ -1,5 +1,7 @@
 # Home-Assistant 记账本 (Budget Book)
 
+Fork v1.2.5 在图表页新增餐饮细项，可按餐别与选填渠道查看支出。旧记录仍纳入统计，无需迁移账目。详见 [Fork 维护说明](FORK_MAINTENANCE.md)。
+
 此 repository 是 ctes-08 维护的 fork，基于原作者 v1.2.3。Fork v1.2.4 修正月底固定支出、HA 本地午夜统计更新，新增指定账簿查询，并改用本地图表库。安装与更新方式见 [Fork 维护说明](FORK_MAINTENANCE.md)。LINE Bot 指令为独立接入功能，目前尚未包含。
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
@@ -13,7 +15,7 @@
 - **HACS integration：** 保留原本 Home Assistant entity、sensor、service、侧边栏面板与 HA storage 行为。
 - **共用核心：** 前端 UI、语言文件、分析逻辑、数据格式、导入导出、示例数据与 migration 放在 `shared/core/`，再同步到两个 adapter。
 
-当前版本：Supervisor Add-on 与 HACS integration 皆为 `v1.2.4`。
+当前版本：Supervisor Add-on 与 HACS integration 皆为 `v1.2.5`。
 
 ## 截图
 

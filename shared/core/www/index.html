@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>記帳本</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=1.2.5" />
   <script src="vendor/chart.umd.js"></script>
 </head>
 <body>
@@ -114,6 +114,20 @@
 
         <!-- ============ 圖表 ============ -->
         <section id="tab-charts" class="tab-content">
+          <div class="card" id="food-card">
+            <div class="card-header" data-i18n="food.title">餐飲細項</div>
+            <p class="hint" data-i18n="food.hint">依餐別或通路查看支出。沒填的紀錄也會計入總額。</p>
+            <div class="food-filters">
+              <label><span data-i18n="food.month">月份</span><input type="month" id="food-month" min="1900-01" max="2100-12" /></label>
+              <label><span data-i18n="food.meal">餐別</span><select id="food-meal"></select></label>
+              <label><span data-i18n="food.channel">通路</span><select id="food-channel"></select></label>
+            </div>
+            <p id="food-total" class="food-total" role="status" aria-live="polite"></p>
+            <div class="food-breakdowns">
+              <div><h3 data-i18n="food.by_meal">按餐別</h3><table class="data-table"><thead><tr><th data-i18n="food.meal">餐別</th><th data-i18n="table.amount">金額</th></tr></thead><tbody id="food-meal-tbody"></tbody></table></div>
+              <div><h3 data-i18n="food.by_channel">按通路</h3><table class="data-table"><thead><tr><th data-i18n="food.channel">通路</th><th data-i18n="table.amount">金額</th></tr></thead><tbody id="food-channel-tbody"></tbody></table></div>
+            </div>
+          </div>
           <div class="card">
             <div class="card-header" data-i18n="chart.trend">近 6 個月收入 vs 支出</div>
             <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
@@ -220,7 +234,7 @@
           </div>
           <div class="card">
             <div class="card-header" data-i18n="settings.about">關於</div>
-            <p class="hint" data-i18n="settings.about_text">記帳本 v1.2.4 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。</p>
+            <p class="hint" data-i18n="settings.about_text">記帳本 v1.2.5 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。</p>
           </div>
         </section>
       </main>
@@ -267,6 +281,7 @@
           <div class="form-row">
             <label data-i18n="field.note">備註</label>
             <input type="text" id="tx-note" placeholder="選填,例如「便當」" data-i18n-placeholder="placeholder.note" />
+            <p class="hint" data-i18n="food.note_hint">餐飲可填「午餐」或「午餐｜Uber Eats」；通路選填。</p>
           </div>
         </div>
         <div class="modal-footer">
@@ -395,6 +410,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=4"></script>
+  <script src="food.js?v=1.2.5"></script>
+  <script src="app.js?v=1.2.5"></script>
 </body>
 </html>

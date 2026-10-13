@@ -16,6 +16,7 @@ INTEGRATION_FILES = [
     "sample_data.py",
     "store.py",
     "www/app.js",
+    "www/food.js",
     "www/index.html",
     "www/style.css",
     "www/locales/en.json",
@@ -24,6 +25,7 @@ INTEGRATION_FILES = [
 ]
 
 ADDON_SHARED_FILES = [
+    "www/food.js",
     "analytics.py",
     "const.py",
     "www/style.css",
@@ -145,21 +147,21 @@ def addon_index(text: str) -> str:
         '<script src="vendor/chart.umd.js"></script>',
     )
     return text.replace(
-        "記帳本 v1.2.4 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
-        "記帳本 Add-on v1.2.4 · 移植自記帳本 v1.2.4，資料儲存在 /data/budget_book.json。",
+        "記帳本 v1.2.5 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
+        "記帳本 Add-on v1.2.5 · 移植自記帳本 v1.2.5，資料儲存在 /data/budget_book.json。",
     )
 
 
 def addon_locale(text: str) -> str:
     return text.replace(
-        "記帳本 v1.2.4 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
-        "記帳本 Add-on v1.2.4 · 移植自記帳本 v1.2.4，資料儲存在 /data/budget_book.json。",
+        "記帳本 v1.2.5 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
+        "記帳本 Add-on v1.2.5 · 移植自記帳本 v1.2.5，資料儲存在 /data/budget_book.json。",
     ).replace(
-        "Budget Book v1.2.4 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
-        "Budget Book Add-on v1.2.4 · Ported from Budget Book v1.2.4, stored in /data/budget_book.json.",
+        "Budget Book v1.2.5 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
+        "Budget Book Add-on v1.2.5 · Ported from Budget Book v1.2.5, stored in /data/budget_book.json.",
     ).replace(
-        "记账本 v1.2.4 — 集成于 Home Assistant，数据储存在 HA storage，并随系统备份保存。",
-        "记账本 Add-on v1.2.4 · 移植自记账本 v1.2.4，数据存放在 /data/budget_book.json。",
+        "记账本 v1.2.5 — 集成于 Home Assistant，数据储存在 HA storage，并随系统备份保存。",
+        "记账本 Add-on v1.2.5 · 移植自记账本 v1.2.5，数据存放在 /data/budget_book.json。",
     )
 
 

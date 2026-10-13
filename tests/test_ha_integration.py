@@ -54,6 +54,18 @@ class IntegrationTests(unittest.IsolatedAsyncioTestCase):
         options = self.hass.services.registered[("budget_book", "get_book")][1]
         self.assertEqual(options["supports_response"].name, "ONLY")
 
+    async def test_dining_note_survives_storage_and_edits(self):
+        await self.hass.services.call("add_transaction", book_id=self.owner, date="2026-10-13",
+                                      type="expense", amount=180, category="food", note="午餐｜Uber Eats")
+        tid = self.store.books[self.owner]["transactions"][0]["id"]
+        await self.hass.services.call("update_transaction", book_id=self.owner, transaction_id=tid,
+                                      date="2026-10-13", type="expense", amount=190, category="food", note="晚餐｜foodpanda｜加飯")
+        await self.store.async_save()
+        restored = self.core.BudgetStore(self.hass)
+        await restored.async_load()
+        self.assertEqual(restored.books[self.owner]["transactions"][0]["note"], "晚餐｜foodpanda｜加飯")
+        self.assertEqual(restored.books[self.owner]["transactions"][0]["amount"], 190)
+
     async def test_midnight_refreshes_month_without_a_transaction(self):
         self.clock.value = datetime(2026, 10, 31, 23, 59, tzinfo=ZoneInfo("Asia/Taipei"))
         await self.hass.services.call("add_transaction", book_id=self.owner, date="2026-10-31",

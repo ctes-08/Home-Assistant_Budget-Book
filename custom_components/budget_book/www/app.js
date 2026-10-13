@@ -3,6 +3,7 @@
 // ============================================================
 
 const $ = (id) => document.getElementById(id);
+const escapeText = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (n) => n == null ? '—' : Math.round(n).toLocaleString(currentLanguage);
 const fmtSigned = (n) => n == null ? '—' : (n >= 0 ? '+' : '') + Math.round(n).toLocaleString(currentLanguage);
 const SUPPORTED_LANGS = ['en', 'zh-Hant', 'zh-Hans'];
@@ -50,7 +51,7 @@ function getHassLanguage() {
 
 async function loadLocales() {
   const pairs = await Promise.all(SUPPORTED_LANGS.map(async (lang) => {
-    const resp = await fetch(`locales/${lang}.json?v=4`);
+    const resp = await fetch(`locales/${lang}.json?v=1.2.5`);
     if (!resp.ok) throw new Error(`Cannot load locale ${lang}`);
     return [lang, await resp.json()];
   }));
@@ -518,7 +519,7 @@ function renderHome() {
           <td>${fmtTxDate(t)}</td>
           <td>${catBadge}</td>
           <td style="text-align:right" class="${cls}">${sign}${fmt(t.amount)}</td>
-          <td style="color:var(--text-secondary)">${t.note || '—'}</td>
+          <td style="color:var(--text-secondary)">${escapeText(t.note || '—')}</td>
         </tr>
       `;
     }).join('');
@@ -602,7 +603,7 @@ function applyTxFilters() {
           <td>${typeBadge}</td>
           <td>${catBadge}</td>
           <td style="text-align:right" class="${cls}">${sign}${fmt(t.amount)}</td>
-          <td style="color:var(--text-secondary)">${t.note || '—'}</td>
+          <td style="color:var(--text-secondary)">${escapeText(t.note || '—')}</td>
           <td><button class="del-btn" data-tx-id="${t.id}">×</button></td>
         </tr>
       `;
@@ -624,7 +625,53 @@ function applyTxFilters() {
   }
 }
 
+function renderFoodStats() {
+  const book = getActiveBook();
+  if (!book || !window.BudgetFood) return;
+  const food = window.BudgetFood;
+  const mealKeys = { '早餐': 'breakfast', '午餐': 'lunch', '晚餐': 'dinner', '點心': 'snack', '宵夜': 'late', '一般餐飲': 'general', '未指定通路': 'unspecified' };
+  const mealLabel = label => t('food.' + mealKeys[label]);
+  const channelLabel = label => label === '未指定通路' ? t('food.unspecified') : label;
+  const money = amount => Number(amount).toLocaleString(currentLanguage, { maximumFractionDigits: 2 });
+  const month = $('food-month');
+  if (!month.value) month.value = localDateStr(new Date()).slice(0, 7);
+  const period = month.value;
+  const mealSelect = $('food-meal'), channelSelect = $('food-channel');
+  function options(select, values, allLabel, labelFn) {
+    const previous = select.value;
+    select.replaceChildren(new Option(allLabel, ''), ...values.map(value => new Option(labelFn(value), value)));
+    if (values.includes(previous)) select.value = previous;
+  }
+  options(mealSelect, [...food.meals, food.general], t('food.all_meals'), mealLabel);
+  try {
+    const all = food.summarize(book, period);
+    options(channelSelect, Object.keys(all.channels), t('food.all_channels'), channelLabel);
+    const summary = food.summarize(book, period, mealSelect.value || null, channelSelect.value || null);
+    $('food-total').textContent = t('food.total', { count: summary.count, amount: money(summary.total), currency: book.currency || 'TWD' });
+    const renderRows = (id, entries, labelFn) => {
+      const body = $(id);
+      body.replaceChildren();
+      for (const [label, amount] of entries) {
+        const row = document.createElement('tr');
+        const name = document.createElement('td'), value = document.createElement('td');
+        name.textContent = labelFn(label); value.textContent = money(amount);
+        row.append(name, value); body.append(row);
+      }
+      if (!entries.length) {
+        const row = document.createElement('tr'), cell = document.createElement('td');
+        cell.colSpan = 2; cell.textContent = t('food.empty'); row.append(cell); body.append(row);
+      }
+    };
+    renderRows('food-meal-tbody', Object.entries(summary.meals).filter(([label]) => !mealSelect.value || label === mealSelect.value), mealLabel);
+    renderRows('food-channel-tbody', Object.entries(summary.channels), channelLabel);
+  } catch (error) {
+    $('food-total').textContent = t('food.invalid');
+    $('food-meal-tbody').replaceChildren(); $('food-channel-tbody').replaceChildren();
+  }
+}
+
 function renderCharts() {
+  renderFoodStats();
   if (!window.Chart) return;
   if (!$('tab-charts').classList.contains('active')) return;
   const book = getActiveBook();
@@ -1120,6 +1167,9 @@ function bindEvents() {
   };
 
   // TX filters
+  ['food-month', 'food-meal', 'food-channel'].forEach(id => {
+    $(id).addEventListener('change', renderFoodStats);
+  });
   ['tx-filter', 'tx-type-filter', 'tx-cat-filter', 'tx-month-filter'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('input', applyTxFilters);

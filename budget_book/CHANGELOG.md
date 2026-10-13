@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.5 (ctes fork)
+
+- Add monthly dining totals grouped and filtered by meal and optional channel.
+- Recognize conservative legacy meal notes without rewriting stored transactions.
+- Preserve the existing note/export/storage contract and render note/channel text safely.
+- Share the new frontend helper across HACS and add-on, with codec and storage regression checks.
+
 ## 1.2.4 (ctes fork)
 
 - Preserve the configured recurring day, falling back only to the actual month end.
