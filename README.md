@@ -1,5 +1,7 @@
 # Home-Assistant 記帳本 (Budget Book)
 
+This is the ctes-08 maintained fork, based on upstream v1.2.3. Fork v1.2.4 adds calendar-correct recurring dates, local-midnight sensor refresh, explicit-book queries and locally bundled charts. See [fork maintenance and installation](FORK_MAINTENANCE.md). LINE bot commands are a separate integration and are not included yet.
+
 [繁體中文](README.zh-TW.md) | [简体中文](README.zh-CN.md)
 
 [![Supervisor Add-on](docs/badges/supervisor-addon.svg)](https://developers.home-assistant.io/docs/add-ons/)
@@ -11,7 +13,7 @@ Budget Book is a Home Assistant budgeting app that now supports both **Superviso
 - **HACS integration:** keeps the original Home Assistant entity, sensor, service, sidebar panel, and HA storage behavior.
 - **Shared core:** frontend UI, language files, analytics, data shape, import/export behavior, sample data, and migration logic are kept in `shared/core/` and synced into both adapters.
 
-Current version: Supervisor Add-on and HACS integration `v1.2.3`.
+Current version: Supervisor Add-on and HACS integration `v1.2.4`.
 
 ## Screenshots
 
@@ -55,7 +57,7 @@ Current version: Supervisor Add-on and HACS integration `v1.2.3`.
 4. Add this repository URL:
 
    ```text
-   https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book
+   https://github.com/ctes-08/Home-Assistant_Budget-Book
    ```
 
 5. Install `Budget Book`.
@@ -63,14 +65,14 @@ Current version: Supervisor Add-on and HACS integration `v1.2.3`.
 
 ### HACS Custom Repository
 
-[![Open your Home Assistant instance and open this repository inside HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Im-Tim-mI&repository=Home-Assistant_Budget-Book&category=integration)
+[![Open your Home Assistant instance and open this repository inside HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ctes-08&repository=Home-Assistant_Budget-Book&category=integration)
 
 1. Open HACS in Home Assistant.
 2. Open the three-dot menu and choose `Custom repositories`.
 3. Add this repository URL:
 
    ```text
-   https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book
+   https://github.com/ctes-08/Home-Assistant_Budget-Book
    ```
 
 4. Select category `Integration`.

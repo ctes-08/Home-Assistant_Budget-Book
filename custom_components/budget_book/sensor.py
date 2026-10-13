@@ -15,6 +15,8 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.event import async_track_time_change
+from homeassistant.util import dt as dt_util
 
 from .analytics import compute_book_metrics
 from .const import DOMAIN, SIGNAL_UPDATE
@@ -30,6 +32,7 @@ async def async_setup_entry(
     entry_data = hass.data[DOMAIN][entry.entry_id]
     store = entry_data["store"]
     coord = BudgetCoordinator(hass, store)
+    entry.async_on_unload(coord.async_shutdown)
 
     sensors = [
         BudgetSensor(coord, entry.entry_id, "month_expense", "本月支出", "TWD", "mdi:cash-minus", SensorStateClass.MEASUREMENT),
@@ -52,12 +55,29 @@ class BudgetCoordinator:
         self.metrics: dict[str, Any] = {}
         self._listeners: list = []
         self._unsub = None
+        self._unsub_midnight = None
 
     async def async_init(self) -> None:
+        if self._unsub is not None:
+            return
         self.refresh()
         self._unsub = async_dispatcher_connect(
             self.hass, SIGNAL_UPDATE, self._on_update
         )
+        self._unsub_midnight = async_track_time_change(
+            self.hass, self._on_midnight, hour=0, minute=0, second=0
+        )
+
+    @callback
+    def async_shutdown(self) -> None:
+        for attr in ("_unsub", "_unsub_midnight"):
+            if unsub := getattr(self, attr):
+                unsub()
+                setattr(self, attr, None)
+
+    @callback
+    def _on_midnight(self, _now) -> None:
+        self._on_update()
 
     @callback
     def _on_update(self) -> None:
@@ -68,7 +88,7 @@ class BudgetCoordinator:
     def refresh(self) -> None:
         book = self.store.active_book
         if book:
-            self.metrics = compute_book_metrics(book)
+            self.metrics = compute_book_metrics(book, dt_util.now().date())
         else:
             self.metrics = {}
 

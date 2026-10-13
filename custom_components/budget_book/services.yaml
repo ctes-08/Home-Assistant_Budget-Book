@@ -1,3 +1,12 @@
+get_book:
+  name: 查詢指定記帳本
+  description: 回傳指定帳簿的交易、分類、預算與統計，不改變目前選定帳簿。
+  fields:
+    book_id:
+      name: 記帳本 ID
+      required: true
+      selector: { text: }
+
 add_transaction:
   name: 新增交易
   description: 新增一筆收入或支出

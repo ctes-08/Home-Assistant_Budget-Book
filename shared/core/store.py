@@ -183,6 +183,8 @@ class BudgetStore:
                     await self._backup_store.async_save(raw)
                 await self.async_save()
         else:
+            if raw is not None:
+                raise ValueError("Invalid Budget Book storage; restore the file from backup")
             self._data = {"books": {}, "active_book_id": None}
 
         # Ensure at least one book exists

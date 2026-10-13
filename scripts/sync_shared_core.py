@@ -104,11 +104,11 @@ async function connectHA() {
 
 
 def copy_text(src: Path, dst: Path, transform=None) -> None:
-    text = src.read_text()
+    text = src.read_text(encoding="utf-8")
     if transform:
         text = transform(text)
     dst.parent.mkdir(parents=True, exist_ok=True)
-    dst.write_text(text)
+    dst.write_text(text, encoding="utf-8", newline="\n")
 
 
 def copy_binary(src: Path, dst: Path) -> None:
@@ -145,21 +145,21 @@ def addon_index(text: str) -> str:
         '<script src="vendor/chart.umd.js"></script>',
     )
     return text.replace(
-        "記帳本 v1.2.3 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
-        "記帳本 Add-on v1.2.3 · 移植自記帳本 v1.2.3，資料儲存在 /data/budget_book.json。",
+        "記帳本 v1.2.4 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
+        "記帳本 Add-on v1.2.4 · 移植自記帳本 v1.2.4，資料儲存在 /data/budget_book.json。",
     )
 
 
 def addon_locale(text: str) -> str:
     return text.replace(
-        "記帳本 v1.2.3 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
-        "記帳本 Add-on v1.2.3 · 移植自記帳本 v1.2.3，資料儲存在 /data/budget_book.json。",
+        "記帳本 v1.2.4 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
+        "記帳本 Add-on v1.2.4 · 移植自記帳本 v1.2.4，資料儲存在 /data/budget_book.json。",
     ).replace(
-        "Budget Book v1.2.3 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
-        "Budget Book Add-on v1.2.3 · Ported from Budget Book v1.2.3, stored in /data/budget_book.json.",
+        "Budget Book v1.2.4 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
+        "Budget Book Add-on v1.2.4 · Ported from Budget Book v1.2.4, stored in /data/budget_book.json.",
     ).replace(
-        "记账本 v1.2.3 — 集成于 Home Assistant，数据储存在 HA storage，并随系统备份保存。",
-        "记账本 Add-on v1.2.3 · 移植自记账本 v1.2.3，数据存放在 /data/budget_book.json。",
+        "记账本 v1.2.4 — 集成于 Home Assistant，数据储存在 HA storage，并随系统备份保存。",
+        "记账本 Add-on v1.2.4 · 移植自记账本 v1.2.4，数据存放在 /data/budget_book.json。",
     )
 
 
@@ -183,6 +183,10 @@ def main() -> None:
 
     for name in ADDON_LOCALES:
         copy_text(SHARED / "www/locales" / name, ADDON_APP / "www/locales" / name, addon_locale)
+
+    for name in ("chart.umd.js", "Chart.js-LICENSE.md"):
+        for target in (INTEGRATION, ADDON_APP):
+            copy_binary(SHARED / "www/vendor" / name, target / "www/vendor" / name)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.4 (ctes fork)
+
+- Preserve the configured recurring day, falling back only to the actual month end.
+- Refresh HA sensors at local midnight and use the configured HA calendar.
+- Add explicit-book `budget_book.get_book` response action for independent clients.
+- Bundle Chart.js for the HACS panel as well as the add-on.
+- Refuse to overwrite invalid existing integration storage with an empty ledger.
+
 ## 1.2.3
 
 - Add root-level HACS brand assets (`brand/icon.png`, `brand/icon@2x.png`, `brand/icon.svg`) so the HACS repository list can show the Budget Book icon.

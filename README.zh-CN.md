@@ -1,5 +1,7 @@
 # Home-Assistant 记账本 (Budget Book)
 
+此 repository 是 ctes-08 维护的 fork，基于原作者 v1.2.3。Fork v1.2.4 修正月底固定支出、HA 本地午夜统计更新，新增指定账簿查询，并改用本地图表库。安装与更新方式见 [Fork 维护说明](FORK_MAINTENANCE.md)。LINE Bot 指令为独立接入功能，目前尚未包含。
+
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
 [![Supervisor Add-on](docs/badges/supervisor-addon.svg)](https://developers.home-assistant.io/docs/add-ons/)
@@ -11,7 +13,7 @@
 - **HACS integration：** 保留原本 Home Assistant entity、sensor、service、侧边栏面板与 HA storage 行为。
 - **共用核心：** 前端 UI、语言文件、分析逻辑、数据格式、导入导出、示例数据与 migration 放在 `shared/core/`，再同步到两个 adapter。
 
-当前版本：Supervisor Add-on 与 HACS integration 皆为 `v1.2.3`。
+当前版本：Supervisor Add-on 与 HACS integration 皆为 `v1.2.4`。
 
 ## 截图
 
@@ -55,7 +57,7 @@
 4. 加入 repository URL：
 
    ```text
-   https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book
+   https://github.com/ctes-08/Home-Assistant_Budget-Book
    ```
 
 5. 安装 `Budget Book`。
@@ -63,14 +65,14 @@
 
 ### HACS Custom Repository
 
-[![打开 Home Assistant，并在 HACS 中加入此 repository](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Im-Tim-mI&repository=Home-Assistant_Budget-Book&category=integration)
+[![打开 Home Assistant，并在 HACS 中加入此 repository](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ctes-08&repository=Home-Assistant_Budget-Book&category=integration)
 
 1. 在 Home Assistant 打开 HACS。
 2. 点击右上角三点菜单，选择 `Custom repositories`。
 3. 加入 repository URL：
 
    ```text
-   https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book
+   https://github.com/ctes-08/Home-Assistant_Budget-Book
    ```
 
 4. Category 选择 `Integration`。

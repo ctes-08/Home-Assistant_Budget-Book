@@ -1,6 +1,7 @@
 """Budget Book integration for Home Assistant."""
 from __future__ import annotations
 
+import copy
 import logging
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -11,12 +12,14 @@ import voluptuous as vol
 from homeassistant.components.frontend import async_register_built_in_panel
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.core import HomeAssistant, ServiceCall, SupportsResponse
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_track_time_change
+from homeassistant.util import dt as dt_util
 
-from .analytics import find_due_recurring
+from .analytics import compute_book_metrics, find_due_recurring
 from .const import (
     DOMAIN,
     PLATFORMS,
@@ -124,7 +127,7 @@ async def _run_recurring_for_all_books(hass: HomeAssistant) -> None:
     store = _get_store(hass)
     if not store:
         return
-    today = date.today()
+    today = dt_util.now().date()
     today_str = today.isoformat()
     added_count = 0
     for book_id, book in list(store.books.items()):
@@ -229,9 +232,25 @@ SET_ACTIVE_BOOK_SCHEMA = vol.Schema({
     vol.Required("book_id"): cv.string,
 })
 
+GET_BOOK_SCHEMA = vol.Schema({
+    vol.Required("book_id"): cv.string,
+})
+
 
 async def _async_register_services(hass: HomeAssistant) -> None:
     """Register all services."""
+
+    async def handle_get_book(call: ServiceCall) -> dict[str, Any]:
+        store = _get_store(hass)
+        if store is None:
+            raise ServiceValidationError("Budget Book is not loaded")
+        book = store.books.get(call.data["book_id"])
+        if book is None:
+            raise ServiceValidationError("Budget book not found")
+        return {
+            "book": copy.deepcopy(book),
+            "metrics": compute_book_metrics(book, dt_util.now().date()),
+        }
 
     def _active_book_id(call_data: dict[str, Any]) -> str | None:
         store = _get_store(hass)
@@ -401,6 +420,10 @@ async def _async_register_services(hass: HomeAssistant) -> None:
         await store.async_replace_data(call.data["data"])
         async_dispatcher_send(hass, SIGNAL_UPDATE)
 
+    hass.services.async_register(
+        DOMAIN, "get_book", handle_get_book, schema=GET_BOOK_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
     hass.services.async_register(DOMAIN, SERVICE_ADD_TRANSACTION, handle_add_tx, schema=ADD_TX_SCHEMA)
     hass.services.async_register(DOMAIN, SERVICE_UPDATE_TRANSACTION, handle_update_tx, schema=UPDATE_TX_SCHEMA)
     hass.services.async_register(DOMAIN, SERVICE_DELETE_TRANSACTION, handle_del_tx, schema=DEL_TX_SCHEMA)

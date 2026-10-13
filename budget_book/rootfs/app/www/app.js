@@ -374,11 +374,14 @@ function renderHome() {
     upcomingEl.innerHTML = `<div class="empty">${t('empty.no_recurring')}</div>`;
   } else {
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dueInMonth = (year, month, day) =>
+      new Date(year, month, Math.min(day, new Date(year, month + 1, 0).getDate()));
     const upcoming = recurring.map(r => {
-      const day = Math.min(r.day_of_month, 28);
-      let due = new Date(today.getFullYear(), today.getMonth(), day);
+      const day = r.day_of_month;
+      let due = dueInMonth(today.getFullYear(), today.getMonth(), day);
       if (due < today) {
-        due = new Date(today.getFullYear(), today.getMonth() + 1, day);
+        due = dueInMonth(today.getFullYear(), today.getMonth() + 1, day);
       }
       const daysUntil = Math.ceil((due - today) / 86400000);
       return { ...r, due, daysUntil };
