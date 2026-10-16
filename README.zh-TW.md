@@ -1,6 +1,6 @@
 # Home-Assistant 記帳本 (Budget Book)
 
-Fork v1.2.5 在圖表頁新增餐飲細項，可按餐別與選填通路查看支出。舊紀錄仍納入統計，不需要搬移帳目。詳見 [Fork 維護說明](FORK_MAINTENANCE.md)。
+Fork v1.2.6 在餐飲交易新增選填餐別與通路欄位，備註可另外補充；只改金額會保留原本備註，舊帳與匯出格式相容。詳見 [Fork 維護說明](FORK_MAINTENANCE.md)。
 
 本 repository 是 ctes-08 維護的 fork，以原作者 v1.2.3 為基礎。Fork v1.2.4 修正月底固定支出、HA 本地午夜統計更新，新增指定帳簿查詢，並將圖表程式改為本地載入。安裝與更新方式見 [Fork 維護說明](FORK_MAINTENANCE.md)。LINE Bot 指令屬於另一個串接功能，目前尚未包含。
 
@@ -15,7 +15,7 @@ Fork v1.2.5 在圖表頁新增餐飲細項，可按餐別與選填通路查看�
 - **HACS integration：** 保留原本 Home Assistant entity、sensor、service、側邊欄面板與 HA storage 行為。
 - **共用核心：** 前端 UI、語言檔、分析邏輯、資料格式、匯入匯出、範例資料與 migration 放在 `shared/core/`，再同步到兩個 adapter。
 
-目前版本：Supervisor Add-on 與 HACS integration 皆為 `v1.2.5`。
+目前版本：Supervisor Add-on 與 HACS integration 皆為 `v1.2.6`。
 
 ## 截圖
 

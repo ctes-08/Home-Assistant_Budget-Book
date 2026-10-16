@@ -1,6 +1,6 @@
 # Home-Assistant 記帳本 (Budget Book)
 
-Fork v1.2.5 adds dining details by meal and optional channel in the Charts tab. Existing dining entries remain included; no storage migration is required. See [FORK_MAINTENANCE.md](FORK_MAINTENANCE.md).
+Fork v1.2.6 adds optional meal/channel fields to dining transactions. Notes remain compatible with old exports, and editing only the amount preserves the original note. See [FORK_MAINTENANCE.md](FORK_MAINTENANCE.md).
 
 This is the ctes-08 maintained fork, based on upstream v1.2.3. Fork v1.2.4 adds calendar-correct recurring dates, local-midnight sensor refresh, explicit-book queries and locally bundled charts. See [fork maintenance and installation](FORK_MAINTENANCE.md). LINE bot commands are a separate integration and are not included yet.
 
@@ -15,7 +15,7 @@ Budget Book is a Home Assistant budgeting app that now supports both **Superviso
 - **HACS integration:** keeps the original Home Assistant entity, sensor, service, sidebar panel, and HA storage behavior.
 - **Shared core:** frontend UI, language files, analytics, data shape, import/export behavior, sample data, and migration logic are kept in `shared/core/` and synced into both adapters.
 
-Current version: Supervisor Add-on and HACS integration `v1.2.5`.
+Current version: Supervisor Add-on and HACS integration `v1.2.6`.
 
 ## Screenshots
 

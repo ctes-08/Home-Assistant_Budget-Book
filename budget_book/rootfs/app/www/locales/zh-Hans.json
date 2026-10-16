@@ -74,7 +74,7 @@
   "settings.language": "语言",
   "settings.language_hint": "自动模式会跟随 Home Assistant 语言。你也可以在此浏览器手动指定语言。",
   "settings.about": "关于",
-  "settings.about_text": "记账本 Add-on v1.2.5 · 移植自记账本 v1.2.5，数据存放在 /data/budget_book.json。",
+  "settings.about_text": "记账本 Add-on v1.2.6 · 移植自记账本 v1.2.6，数据存放在 /data/budget_book.json。",
   "settings.new_book": "+ 新增记账本",
   "settings.export": "导出 JSON",
   "settings.import": "导入 JSON",
@@ -187,5 +187,13 @@
   "food.total": "{count} 笔，共 {amount} {currency}",
   "food.empty": "此条件下暂无餐饮记录。",
   "food.invalid": "有无法统计的金额，请检查餐饮账目。",
-  "food.note_hint": "餐饮备注可填「午餐」或「午餐｜Uber Eats」；渠道选填。"
+  "food.note_hint": "餐饮备注可填「午餐」或「午餐｜Uber Eats」；渠道选填。",
+  "food.meal_optional": "餐别（选填）",
+  "food.channel_optional": "渠道（选填）",
+  "food.general_optional": "未指定餐别（一般餐饮）",
+  "food.channel_placeholder": "例如 现场、Uber Eats",
+  "food.editor_hint": "渠道可选常用名称或自行输入，不必填店家；备注可另外补充。",
+  "food.invalid_meal": "请选择有效餐别。",
+  "food.invalid_channel": "渠道最多 30 字，请勿使用换行、｜或 #。",
+  "food.note_too_long": "餐别、渠道与备注合计最多 100 字，请缩短备注。"
 }

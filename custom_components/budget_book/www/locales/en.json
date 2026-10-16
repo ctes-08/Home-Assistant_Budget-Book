@@ -74,7 +74,7 @@
   "settings.language": "Language",
   "settings.language_hint": "Auto follows the Home Assistant language. Choose a language here to override it for this browser.",
   "settings.about": "About",
-  "settings.about_text": "Budget Book v1.2.5 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
+  "settings.about_text": "Budget Book v1.2.6 — integrated with Home Assistant. Data is stored in HA storage and included in system backups.",
   "settings.new_book": "+ New budget book",
   "settings.export": "Export JSON",
   "settings.import": "Import JSON",
@@ -187,5 +187,13 @@
   "food.total": "{count} entries, {amount} {currency}",
   "food.empty": "No dining entries match these filters.",
   "food.invalid": "A dining amount cannot be summarized. Please check the entries.",
-  "food.note_hint": "Dining notes can use 「午餐」 (lunch) or 「午餐｜Uber Eats」. The channel is optional."
+  "food.note_hint": "Dining notes can use 「午餐」 (lunch) or 「午餐｜Uber Eats」. The channel is optional.",
+  "food.meal_optional": "Meal (optional)",
+  "food.channel_optional": "Channel (optional)",
+  "food.general_optional": "Unspecified meal (general dining)",
+  "food.channel_placeholder": "e.g. On-site, Uber Eats",
+  "food.editor_hint": "Choose a suggested channel or enter your own. A store name is optional; add details in the note.",
+  "food.invalid_meal": "Choose a valid meal.",
+  "food.invalid_channel": "Use up to 30 characters for the channel, without newlines, | or #.",
+  "food.note_too_long": "Meal, channel and note must fit within 100 characters. Please shorten the note."
 }

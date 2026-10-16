@@ -607,3 +607,12 @@ button:hover { background: var(--bg-secondary); }
 .food-breakdowns td:first-child { overflow-wrap: anywhere; }
 .food-breakdowns th:last-child, .food-breakdowns td:last-child { text-align: right; }
 @media (max-width: 600px) { .food-breakdowns { grid-template-columns: 1fr; } }
+
+/* Optional dining fields in the existing transaction form. */
+.tx-food-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.tx-food-grid .form-row { min-width: 0; margin-bottom: 8px; }
+.tx-food-grid input, .tx-food-grid select { width: 100%; min-width: 0; box-sizing: border-box; }
+#tx-food-fields > .hint { margin: 0 0 16px; }
+@media (max-width: 420px) { .tx-food-grid { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+
+#modal-tx .modal-footer { position: sticky; bottom: 0; z-index: 1; background: var(--bg); }

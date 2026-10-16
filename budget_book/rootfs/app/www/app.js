@@ -27,6 +27,8 @@ let charts = {};
 let modalTxType = 'expense';
 let modalTxCategory = null;
 let editingTxId = null;
+let txFoodActive = false;
+let txFoodOriginal = '';
 let modalCatType = 'expense';
 let localeChoice = localStorage.getItem(LOCALE_STORAGE_KEY) || 'auto';
 let currentLanguage = 'zh-Hant';
@@ -51,7 +53,7 @@ function getHassLanguage() {
 
 async function loadLocales() {
   const pairs = await Promise.all(SUPPORTED_LANGS.map(async (lang) => {
-    const resp = await fetch(`locales/${lang}.json?v=1.2.5`);
+    const resp = await fetch(`locales/${lang}.json?v=1.2.6`);
     if (!resp.ok) throw new Error(`Cannot load locale ${lang}`);
     return [lang, await resp.json()];
   }));
@@ -901,6 +903,46 @@ function localDateStr(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+function txFoodDetails() {
+  return { meal: $('tx-food-meal').value, channel: $('tx-food-channel').value, description: $('tx-note').value };
+}
+
+function resetTxFoodEditor() {
+  txFoodActive = false;
+  txFoodOriginal = '';
+  $('tx-food-fields').hidden = true;
+}
+
+function syncTxFoodEditor() {
+  const food = window.BudgetFood;
+  const book = getActiveBook();
+  const cat = book?.categories.find(c => c.id === modalTxCategory && c.type === modalTxType);
+  const active = !!food && modalTxType === 'expense' && !!cat && (cat.id === 'food' || cat.name === '餐飲');
+  if (active === txFoodActive) return;
+  if (active) {
+    txFoodOriginal = $('tx-note').value;
+    const info = food.decodeNote(txFoodOriginal);
+    const keys = ['breakfast', 'lunch', 'dinner', 'snack', 'late'];
+    const select = $('tx-food-meal');
+    select.replaceChildren(new Option(t('food.general_optional'), food.general),
+      ...food.meals.map((meal, i) => new Option(t('food.' + keys[i]), meal)));
+    select.value = info.meal;
+    $('tx-food-channel').value = info.channel;
+    $('tx-note').value = info.description;
+    const channels = new Set(['現場', 'Uber Eats', 'foodpanda']);
+    for (const tx of book.transactions || []) {
+      if (tx.type !== 'expense' || !book.categories.some(c => c.id === tx.category && c.type === 'expense' && (c.id === 'food' || c.name === '餐飲'))) continue;
+      const channel = food.decodeNote(tx.note).channel;
+      if (channel) channels.add(channel);
+    }
+    $('tx-food-channels').replaceChildren(...[...channels].sort().map(channel => new Option(channel, channel)));
+  } else {
+    $('tx-note').value = food.editorNote(txFoodOriginal, txFoodDetails(), false);
+  }
+  txFoodActive = active;
+  $('tx-food-fields').hidden = !active;
+}
+
 function openTxModal() {
   modalTxType = 'expense';
   modalTxCategory = null;
@@ -908,6 +950,7 @@ function openTxModal() {
   setText('modal-tx-title', 'modal.transaction.title');
   $('tx-amount').value = '';
   $('tx-note').value = '';
+  resetTxFoodEditor();
   const now = new Date();
   $('tx-date').value = localDateStr(now);
   setTimePicker(now);
@@ -930,6 +973,7 @@ function openEditTxModal(txId) {
   setText('modal-tx-title', 'modal.transaction.edit_title');
   $('tx-amount').value = tx.amount;
   $('tx-note').value = tx.note || '';
+  resetTxFoodEditor();
   $('tx-date').value = tx.date;
   setTimePickerValue(tx.time);
   document.querySelectorAll('.tx-type-btn').forEach(b => {
@@ -954,6 +998,7 @@ function renderCatPicker() {
     ch.onclick = () => {
       modalTxCategory = ch.dataset.cat;
       picker.querySelectorAll('.chip').forEach(x => x.classList.toggle('selected', x.dataset.cat === modalTxCategory));
+      syncTxFoodEditor();
     };
   });
   // Auto-select first
@@ -961,6 +1006,7 @@ function renderCatPicker() {
     modalTxCategory = cats[0].id;
     picker.querySelector('.chip').classList.add('selected');
   }
+  syncTxFoodEditor();
 }
 
 function openBookModal() {
@@ -1053,11 +1099,12 @@ function bindEvents() {
     const amount = parseFloat($('tx-amount').value);
     const date = $('tx-date').value;
     const time = getTimePicker();
-    const note = $('tx-note').value;
+    let note = $('tx-note').value;
     if (!amount || amount <= 0) { alert(t('alert.required_amount')); return; }
     if (!date) { alert(t('alert.required_date')); return; }
     if (!modalTxCategory) { alert(t('alert.required_category')); return; }
     try {
+      if (txFoodActive) note = window.BudgetFood.editorNote(txFoodOriginal, txFoodDetails());
       const payload = { date, time, type: modalTxType, amount, category: modalTxCategory, note };
       if (editingTxId) {
         await callService('budget_book', 'update_transaction', {
@@ -1068,7 +1115,7 @@ function bindEvents() {
         await callService('budget_book', 'add_transaction', payload);
       }
       closeModal('modal-tx');
-    } catch (e) { alert(t('alert.add_failed', { message: e.message })); }
+    } catch (e) { alert(e.message.startsWith('food.') ? t(e.message) : t('alert.add_failed', { message: e.message })); }
   };
 
   // TX filters

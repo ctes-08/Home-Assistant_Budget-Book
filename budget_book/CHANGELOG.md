@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.6 (ctes fork)
+
+- Add optional meal/channel inputs for dining transactions, with a separate description.
+- Preserve unchanged legacy notes and keep dining metadata when editing descriptions.
+- Keep draft content across category/type switches and clear it when reopening a form.
+- Validate edited dining metadata and keep Save accessible on mobile.
+- Share all changes across HACS and add-on; storage format is unchanged.
+
 ## 1.2.5 (ctes fork)
 
 - Add monthly dining totals grouped and filtered by meal and optional channel.

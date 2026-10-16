@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>記帳本</title>
-  <link rel="stylesheet" href="style.css?v=1.2.5" />
+  <link rel="stylesheet" href="style.css?v=1.2.6" />
   <script src="vendor/chart.umd.js"></script>
 </head>
 <body>
@@ -234,7 +234,7 @@
           </div>
           <div class="card">
             <div class="card-header" data-i18n="settings.about">關於</div>
-            <p class="hint" data-i18n="settings.about_text">記帳本 Add-on v1.2.5 · 移植自記帳本 v1.2.5，資料儲存在 /data/budget_book.json。</p>
+            <p class="hint" data-i18n="settings.about_text">記帳本 Add-on v1.2.6 · 移植自記帳本 v1.2.6，資料儲存在 /data/budget_book.json。</p>
           </div>
         </section>
       </main>
@@ -278,10 +278,23 @@
               <span data-i18n="time.minute">分</span>
             </div>
           </div>
+          <div id="tx-food-fields" hidden>
+            <div class="tx-food-grid">
+              <div class="form-row">
+                <label for="tx-food-meal" data-i18n="food.meal_optional">餐別（選填）</label>
+                <select id="tx-food-meal"></select>
+              </div>
+              <div class="form-row">
+                <label for="tx-food-channel" data-i18n="food.channel_optional">通路（選填）</label>
+                <input type="text" id="tx-food-channel" list="tx-food-channels" maxlength="30" placeholder="例如 現場、Uber Eats" data-i18n-placeholder="food.channel_placeholder" aria-describedby="tx-food-hint" />
+                <datalist id="tx-food-channels"></datalist>
+              </div>
+            </div>
+            <p class="hint" id="tx-food-hint" data-i18n="food.editor_hint">通路可選常用名稱或自行輸入，不必填店家；備註可另外補充。</p>
+          </div>
           <div class="form-row">
-            <label data-i18n="field.note">備註</label>
+            <label for="tx-note" data-i18n="field.note">備註</label>
             <input type="text" id="tx-note" placeholder="選填,例如「便當」" data-i18n-placeholder="placeholder.note" />
-            <p class="hint" data-i18n="food.note_hint">餐飲可填「午餐」或「午餐｜Uber Eats」；通路選填。</p>
           </div>
         </div>
         <div class="modal-footer">
@@ -410,7 +423,7 @@
     </div>
   </div>
 
-  <script src="food.js?v=1.2.5"></script>
-  <script src="app.js?v=1.2.5"></script>
+  <script src="food.js?v=1.2.6"></script>
+  <script src="app.js?v=1.2.6"></script>
 </body>
 </html>

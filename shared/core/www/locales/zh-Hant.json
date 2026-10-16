@@ -74,7 +74,7 @@
   "settings.language": "語系",
   "settings.language_hint": "自動模式會跟隨 Home Assistant 語系。你也可以在此瀏覽器手動指定語系。",
   "settings.about": "關於",
-  "settings.about_text": "記帳本 v1.2.5 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
+  "settings.about_text": "記帳本 v1.2.6 — 整合於 Home Assistant，資料存在 HA storage 並隨著系統備份。",
   "settings.new_book": "+ 新增記帳本",
   "settings.export": "匯出 JSON",
   "settings.import": "匯入 JSON",
@@ -187,5 +187,13 @@
   "food.total": "{count} 筆，共 {amount} {currency}",
   "food.empty": "這個條件下尚無餐飲紀錄。",
   "food.invalid": "有無法統計的金額，請檢查餐飲帳目。",
-  "food.note_hint": "餐飲可填「午餐」或「午餐｜Uber Eats」；通路選填。"
+  "food.note_hint": "餐飲可填「午餐」或「午餐｜Uber Eats」；通路選填。",
+  "food.meal_optional": "餐別（選填）",
+  "food.channel_optional": "通路（選填）",
+  "food.general_optional": "未指定餐別（一般餐飲）",
+  "food.channel_placeholder": "例如 現場、Uber Eats",
+  "food.editor_hint": "通路可選常用名稱或自行輸入，不必填店家；備註可另外補充。",
+  "food.invalid_meal": "請選擇有效餐別。",
+  "food.invalid_channel": "通路最多 30 字，請勿使用換行、｜或 #。",
+  "food.note_too_long": "餐別、通路與備註合計最多 100 字，請縮短備註。"
 }

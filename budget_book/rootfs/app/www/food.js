@@ -27,6 +27,26 @@
     if (match) return { meal: match[1], channel: '', description: match[2].trim() };
     return { meal: general, channel: '', description: ['餐飲', '餐費'].includes(raw) ? '' : raw };
   }
+  // Leave untouched notes byte-for-byte intact when only amount/date/category changes.
+  // The unvalidated form is only a draft when switching away from food; it is never
+  // used to save a food entry. Keeping it visible avoids losing hidden field values.
+  function editorNote(original, details, validate = true) {
+    original = String(original || '');
+    const initial = decodeNote(original);
+    if (['meal', 'channel', 'description'].every(key => initial[key] === details[key])) return original;
+    if (![...meals, general].includes(details.meal)) throw new Error('food.invalid_meal');
+    let channel = String(details.channel || '').trim();
+    const description = String(details.description || '').trim();
+    if (validate) {
+      try { channel = channelName(channel); }
+      catch { throw new Error('food.invalid_channel'); }
+    }
+    const label = details.meal === general ? '餐飲' : details.meal;
+    const note = details.meal === general && !channel && !description ? ''
+      : !channel && !description ? label : label + '｜' + channel + (description ? '｜' + description : '');
+    if (validate && [...note].length > 100) throw new Error('food.note_too_long');
+    return note;
+  }
   function summarize(book, period, meal = null, channel = null) {
     const ids = new Set((book.categories || []).filter(c => c.type === 'expense' && (c.id === 'food' || c.name === '餐飲')).map(c => c.id));
     const mealTotals = Object.fromEntries([...meals, general].map(label => [label, 0]));
@@ -46,7 +66,7 @@
     const channels = Object.fromEntries([...channelTotals].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)));
     return { total, count, meals: mealTotals, channels };
   }
-  const api = { meals, general, channelName, decodeNote, summarize };
+  const api = { meals, general, channelName, decodeNote, editorNote, summarize };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.BudgetFood = api;
 })(typeof window === 'undefined' ? globalThis : window);

@@ -29,3 +29,14 @@ assert.equal(food.summarize({ ...book, transactions: [tx(1, '午餐｜__proto__'
 assert.equal(food.summarize({ categories: book.categories, transactions: [] }, '2026-10').count, 0);
 console.log('Dining codec and aggregation checks passed.');
 module.exports = { samples, book };
+
+// Editing metadata must preserve exact legacy notes until the user changes a field.
+for (const [note, details] of samples) assert.equal(food.editorNote(note, details), note);
+assert.equal(food.editorNote('', { meal: '晚餐', channel: 'uber', description: '便當' }), '晚餐｜Uber Eats｜便當');
+assert.equal(food.editorNote('午餐 飯糰', { meal: '晚餐', channel: '', description: '飯糰' }), '晚餐｜｜飯糰');
+assert.equal(food.editorNote('晚餐｜現場', { meal: food.general, channel: '', description: '' }), '');
+assert.throws(() => food.editorNote('', { meal: '晚餐', channel: 'a|b', description: '' }), /invalid_channel/);
+assert.throws(() => food.editorNote('', { meal: '晚餐', channel: '現場', description: '字'.repeat(100) }), /note_too_long/);
+const changed = food.editorNote('咖啡｜門市', { meal: '點心', channel: '現場', description: '咖啡' });
+assert.deepEqual(food.decodeNote(changed), { meal: '點心', channel: '現場', description: '咖啡' });
+console.log('Dining editor preservation and validation checks passed.');
