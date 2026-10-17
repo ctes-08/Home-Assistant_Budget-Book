@@ -2,6 +2,13 @@
 
 此 fork 以 [Im-Tim-mI/Home-Assistant_Budget-Book v1.2.3](https://github.com/Im-Tim-mI/Home-Assistant_Budget-Book/releases/tag/v1.2.3) 為基礎，保留原作者 MIT 授權與版權聲明。正式版本由 ctes-08 的 repository 發布；不自動合併或安裝上游更新。
 
+## Fork v1.2.7
+
+- 首頁固定支出到期日期改用本地日曆格式，避免台灣等 UTC+ 時區顯示早一天。
+- 沿用既有到期日、今天標籤與月底處理；沒有修改帳目、固定支出規則或儲存格式。
+- 現有後端相容；僅套用靜態介面時保留既有後端 manifest，重新整理記帳本即可。完整 HACS 更新依其提示重啟 HA。
+- LINE 適配器同步放行未改 Store 的版本 1.2.7。
+
 ## Fork v1.2.6
 
 - 新增／編輯餐飲支出時，顯示選填餐別、通路及獨立備註；其他分類及收入維持一般備註。

@@ -53,7 +53,7 @@ function getHassLanguage() {
 
 async function loadLocales() {
   const pairs = await Promise.all(SUPPORTED_LANGS.map(async (lang) => {
-    const resp = await fetch(`locales/${lang}.json?v=1.2.6`);
+    const resp = await fetch(`locales/${lang}.json?v=1.2.7`);
     if (!resp.ok) throw new Error(`Cannot load locale ${lang}`);
     return [lang, await resp.json()];
   }));
@@ -495,7 +495,7 @@ function renderHome() {
         <div class="upcoming-row">
           <div>
             <div class="upcoming-name">${r.name} ${badge}</div>
-            <div class="upcoming-meta">${r.due.toISOString().slice(0,10)} · ${catName}</div>
+            <div class="upcoming-meta">${localDateStr(r.due)} · ${catName}</div>
           </div>
           <div class="upcoming-amount ${r.type}">${r.type === 'expense' ? '-' : '+'}${fmt(r.amount)}</div>
         </div>

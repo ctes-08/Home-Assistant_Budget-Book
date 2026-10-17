@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.7 (ctes fork)
+
+- Format upcoming recurring dates in local time so UTC+ browsers do not show the previous day.
+- Preserve existing today badges, month-end scheduling and the storage format.
+
 ## 1.2.6 (ctes fork)
 
 - Add optional meal/channel inputs for dining transactions, with a separate description.
